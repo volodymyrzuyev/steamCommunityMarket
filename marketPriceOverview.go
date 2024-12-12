@@ -13,14 +13,13 @@ func (c *Controller) MarketPriceOverview(params MarketPriceOverviewParams) ([]by
 		return []byte{}, err
 	}
 
-	values := url.Query()
+	query := make([]string, 4)
+	query[0] = "country=" + params.Country
+	query[1] = "currency=" + params.Currency
+	query[2] = "appid=" + params.AppID
+	query[3] = "market_hash_name=" + params.MarketHashName
 
-	values.Add("country", params.Country)
-	values.Add("currency", params.Currency)
-	values.Add("appid", params.AppID)
-	values.Add("market_hash_name", params.MarketHashName)
-
-	url.RawQuery = values.Encode()
+	url.RawQuery = constructQuery(query)
 
 	return c.runQuerry(url.String())
 }

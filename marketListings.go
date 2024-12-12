@@ -19,14 +19,14 @@ func (c *Controller) MarketListings(params MarketListingsParams) ([]byte, error)
 		return []byte{}, err
 	}
 
-	values := url.Query()
-	values.Add("country", params.Country)
-	values.Add("currency", params.Currency)
-	values.Add("start", params.Start)
-	values.Add("count", params.Count)
-	values.Add("language", params.Language)
+	query := make([]string, 5)
+	query[0] = "currency=" + params.Currency
+	query[1] = "coutry=" + params.Country
+	query[2] = "start=" + params.Start
+	query[3] = "count=" + params.Count
+	query[4] = "language=" + params.Language
 
-	url.RawQuery = values.Encode()
+	url.RawQuery = constructQuery(query)
 
 	return c.runQuerry(url.String())
 }

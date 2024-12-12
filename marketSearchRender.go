@@ -13,13 +13,14 @@ func (c *Controller) MarketSearch(params MarketSearchParams) ([]byte, error) {
 		return []byte{}, err
 	}
 
-	values := url.Query()
-	values.Add("start", params.Start)
-	values.Add("count", params.Count)
-	values.Add("querry", params.Querry)
-	values.Add("appid", params.AppID)
+	query := make([]string, 5)
+	query[0] = "norender=1"
+	query[1] = "start=" + params.Start
+	query[2] = "count=" + params.Count
+	query[3] = "query=" + params.Querry
+	query[4] = "appid=" + params.AppID
 
-	url.RawQuery = values.Encode()
+	url.RawQuery = constructQuery(query)
 
 	return c.runQuerry(url.String())
 }

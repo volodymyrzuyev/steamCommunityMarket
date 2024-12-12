@@ -34,3 +34,18 @@ func constructPath(path string) (url.URL, error) {
 
 	return *newUrl, nil
 }
+
+// since URL.Query().Encode() returns the query in a random order, have to create
+// a custom function
+func constructQuery(params []string) string {
+	query := ""
+	for i, v := range params {
+		if i == 0 {
+			query += v
+			continue
+		}
+		query += "&" + v
+	}
+
+	return query
+}

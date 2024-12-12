@@ -1,10 +1,24 @@
 package steamcommunityapi
 
-func (c *Controller) MarketRecent() ([]byte, error) {
-	path, err := constructPath("/market/recent")
+type MarketRecentParams struct {
+	Country  string
+	Language string
+	Currency string
+}
+
+func (c *Controller) MarketRecent(params MarketRecentParams) ([]byte, error) {
+	url, err := constructPath("/market/recent")
 	if err != nil {
 		return []byte{}, err
 	}
 
-	return c.runQuerry(path.String())
+	query := make([]string, 4)
+	query[0] = "country=" + params.Country
+	query[1] = "language=" + params.Language
+	query[2] = "currency=" + params.Currency
+	query[3] = "norender=1"
+
+	url.RawQuery = constructQuery(query)
+
+	return c.runQuerry(url.String())
 }
