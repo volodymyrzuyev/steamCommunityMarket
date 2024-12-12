@@ -13,8 +13,9 @@ type Controller struct {
 func NewApiController(cooldownInterwal float64) *Controller {
 	cooldown := time.Duration(cooldownInterwal) * time.Second
 	controller := Controller{
-		cooldown:    cooldown,
-		lastRequest: time.Now().Add(cooldown),
+		cooldown: cooldown,
+		// so the first request will not have to wait for the cooldown to be over
+		lastRequest: time.Now().Add(-cooldown * 2),
 	}
 
 	return &controller
