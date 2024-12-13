@@ -7,7 +7,7 @@ type MarketSearchParams struct {
 	Querry string
 }
 
-func (c *Controller) MarketSearch(params MarketSearchParams) ([]byte, error) {
+func (c *controller) MarketSearch(params MarketSearchParams) ([]byte, error) {
 	url, err := constructPath("/market/search/render")
 	if err != nil {
 		return []byte{}, err
@@ -22,5 +22,5 @@ func (c *Controller) MarketSearch(params MarketSearchParams) ([]byte, error) {
 
 	url.RawQuery = constructQuery(query)
 
-	return c.runQuerry(url.String())
+	return c.runQuery(url.String())
 }

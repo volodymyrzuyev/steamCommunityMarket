@@ -49,3 +49,12 @@ func constructQuery(params []string) string {
 
 	return query
 }
+
+func runHttp(url string) (*http.Response, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}

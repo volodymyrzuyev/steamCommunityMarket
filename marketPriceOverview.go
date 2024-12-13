@@ -7,7 +7,7 @@ type MarketPriceOverviewParams struct {
 	Currency       string
 }
 
-func (c *Controller) MarketPriceOverview(params MarketPriceOverviewParams) ([]byte, error) {
+func (c *controller) MarketPriceOverview(params MarketPriceOverviewParams) ([]byte, error) {
 	url, err := constructPath("/market/priceoverview/")
 	if err != nil {
 		return []byte{}, err
@@ -21,5 +21,5 @@ func (c *Controller) MarketPriceOverview(params MarketPriceOverviewParams) ([]by
 
 	url.RawQuery = constructQuery(query)
 
-	return c.runQuerry(url.String())
+	return c.runQuery(url.String())
 }

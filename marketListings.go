@@ -12,7 +12,7 @@ type MarketListingsParams struct {
 	Language       string
 }
 
-func (c *Controller) MarketListings(params MarketListingsParams) ([]byte, error) {
+func (c *controller) MarketListings(params MarketListingsParams) ([]byte, error) {
 	path := fmt.Sprintf("/market/listings/%s/%s/render", params.AppID, params.MarketHashName)
 	url, err := constructPath(path)
 	if err != nil {
@@ -28,5 +28,5 @@ func (c *Controller) MarketListings(params MarketListingsParams) ([]byte, error)
 
 	url.RawQuery = constructQuery(query)
 
-	return c.runQuerry(url.String())
+	return c.runQuery(url.String())
 }

@@ -6,7 +6,7 @@ type MarketRecentParams struct {
 	Currency string
 }
 
-func (c *Controller) MarketRecent(params MarketRecentParams) ([]byte, error) {
+func (c *controller) MarketRecent(params MarketRecentParams) ([]byte, error) {
 	url, err := constructPath("/market/recent")
 	if err != nil {
 		return []byte{}, err
@@ -20,5 +20,5 @@ func (c *Controller) MarketRecent(params MarketRecentParams) ([]byte, error) {
 
 	url.RawQuery = constructQuery(query)
 
-	return c.runQuerry(url.String())
+	return c.runQuery(url.String())
 }
