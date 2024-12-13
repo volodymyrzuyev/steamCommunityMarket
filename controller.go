@@ -15,6 +15,7 @@ type Api interface {
 type controller struct {
 	state      state
 	httpRunner func(url string) (*http.Response, error)
+	filter     func(resp *http.Response) ([]byte, error)
 }
 
 func NewApiController(cooldownInterwal time.Duration) Api {
@@ -28,22 +29,23 @@ func NewApiController(cooldownInterwal time.Duration) Api {
 	controller := controller{
 		state:      &state,
 		httpRunner: runHttp,
+		filter:     filterOutBasedOnStatusCode,
 	}
 
 	return &controller
 }
 
-func (c *controller) runQuery(url string) ([]byte, error) {
+func (c *controller) runQuery(url string) (*http.Response, error) {
 	if !c.state.cooldownPassed() {
-		return []byte{}, CooldownNotPassed
+		return nil, CooldownNotPassed
 	}
 
 	resp, err := c.httpRunner(url)
 	// update last reqest time to calculate even failed requests
 	c.state.updateLastRequest(time.Now())
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 
-	return filterOutBasedOnStatusCode(*resp)
+	return resp, err
 }

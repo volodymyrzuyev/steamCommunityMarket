@@ -6,7 +6,7 @@ import (
 	"net/url"
 )
 
-func filterOutBasedOnStatusCode(resp http.Response) ([]byte, error) {
+func filterOutBasedOnStatusCode(resp *http.Response) ([]byte, error) {
 	statusCode := resp.StatusCode
 
 	body, err := io.ReadAll(resp.Body)

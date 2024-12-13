@@ -28,5 +28,10 @@ func (c *controller) MarketListings(params MarketListingsParams) ([]byte, error)
 
 	url.RawQuery = constructQuery(query)
 
-	return c.runQuery(url.String())
+	resp, err := c.runQuery(url.String())
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return c.filter(resp)
 }
