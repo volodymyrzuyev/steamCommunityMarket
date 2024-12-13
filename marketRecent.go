@@ -20,10 +20,5 @@ func (c *controller) MarketRecent(params MarketRecentParams) ([]byte, error) {
 
 	url.RawQuery = constructQuery(query)
 
-	resp, err := c.runQuery(url.String())
-	if err != nil {
-		return []byte{}, err
-	}
-
-	return c.filter(resp)
+	return c.runQuery(url.String())
 }

@@ -35,17 +35,17 @@ func NewApiController(cooldownInterwal time.Duration) Api {
 	return &controller
 }
 
-func (c *controller) runQuery(url string) (*http.Response, error) {
+func (c *controller) runQuery(url string) ([]byte, error) {
 	if !c.state.cooldownPassed() {
-		return nil, CooldownNotPassed
+		return []byte{}, CooldownNotPassed
 	}
 
 	resp, err := c.httpRunner(url)
 	// update last reqest time to calculate even failed requests
 	c.state.updateLastRequest(time.Now())
 	if err != nil {
-		return nil, err
+		return []byte{}, err
 	}
 
-	return resp, err
+	return c.filter(resp)
 }
