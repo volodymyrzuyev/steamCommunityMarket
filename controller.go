@@ -20,11 +20,19 @@ type controller struct {
 }
 
 func NewApiController(cooldownInterwal time.Duration) Api {
+	return internalInit(cooldownInterwal, false)
+}
 
+func NewApiControllerAutoSleep(cooldownInterwal time.Duration) Api {
+	return internalInit(cooldownInterwal, true)
+}
+
+func internalInit(cooldownInterwal time.Duration, shouldWait bool) *controller {
 	state := stateStore{
 		cooldown: cooldownInterwal,
 		// so the first request will not have to wait for the cooldown to be over
-		lastRequest: time.Now().Add(-cooldownInterwal * 2),
+		lastRequest:     time.Now().Add(-cooldownInterwal * 2),
+		waitForCooldown: shouldWait,
 	}
 
 	controller := controller{
