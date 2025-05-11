@@ -10,6 +10,7 @@ type Api interface {
 	MarketPriceOverview(params MarketPriceOverviewParams) ([]byte, error)
 	MarketRecent(params MarketRecentParams) ([]byte, error)
 	MarketSearch(params MarketSearchParams) ([]byte, error)
+	MarketRecentCompleted(params MarketRecentCompletedParams) ([]byte, error)
 }
 
 type controller struct {
