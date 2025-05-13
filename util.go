@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 func filterOutBasedOnStatusCode(resp *http.Response) ([]byte, error) {
@@ -44,17 +45,25 @@ func constructQuery(params []string) string {
 			query += v
 			continue
 		}
-		query += "&" + v
+		query += "&" + url.QueryEscape(v)
 	}
 
 	return query
 }
 
 func runHttp(url string) (*http.Response, error) {
-	resp, err := http.Get(url)
+	client := &http.Client{Timeout: 10 * time.Second}
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36")
+	req.Header.Set("Accept", "application/json, text/javascript, */*; q=0.01")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
 
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
