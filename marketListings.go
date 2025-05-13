@@ -2,6 +2,7 @@ package steamcommunityapi
 
 import (
 	"fmt"
+	"net/url"
 	"strconv"
 )
 
@@ -12,21 +13,21 @@ func (c *controller) MarketListings(params MarketListingsParams) ([]byte, error)
 	}
 
 	path := fmt.Sprintf("/market/listings/%s/%s/render", params.AppID, params.MarketHashName)
-	url, err := constructPath(path)
+	curUrl, err := constructPath(path)
 	if err != nil {
 		return []byte{}, err
 	}
 
 	query := make([]string, 5)
-	query[0] = "currency=" + params.Currency.code
-	query[1] = "coutry=" + params.Country.code
-	query[2] = "start=" + params.Start
-	query[3] = "count=" + params.Count
-	query[4] = "language=" + params.Language.fullname
+	query[0] = "currency=" + url.QueryEscape(params.Currency.code)
+	query[1] = "coutry=" + url.QueryEscape(params.Country.code)
+	query[2] = "start=" + url.QueryEscape(params.Start)
+	query[3] = "count=" + url.QueryEscape(params.Count)
+	query[4] = "language=" + url.QueryEscape(params.Language.fullname)
 
-	url.RawQuery = constructQuery(query)
+	curUrl.RawQuery = constructQuery(query)
 
-	return c.runQuery(url.String())
+	return c.runQuery(curUrl.String())
 }
 
 type MarketListingsParams struct {

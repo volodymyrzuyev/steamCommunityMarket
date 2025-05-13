@@ -45,7 +45,7 @@ func constructQuery(params []string) string {
 			query += v
 			continue
 		}
-		query += "&" + url.QueryEscape(v)
+		query += "&" + v
 	}
 
 	return query
